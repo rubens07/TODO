@@ -1,0 +1,9 @@
+version: '3.3'
+
+services:
+  db:
+    build: ./database/
+    image: mysql_todo
+    env_file:
+      - ./config/db.env
+    
