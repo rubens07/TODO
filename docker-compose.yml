@@ -2,8 +2,30 @@ version: '3.3'
 
 services:
   db:
-    build: ./database/
     image: mysql_todo
+    container_name: mysql_todo_container
     env_file:
       - ./config/db.env
-    
+    networks:
+      - todo
+
+  backend:
+    depends_on:
+      - db
+    image: backend_todo
+    container_name: backend_todo_container
+    environment:
+      - MYSQL_HOST=mysql_todo_container
+    env_file:
+      - ./config/back.env
+      - ./config/db.env
+    ports:
+      - 5000:5000
+    networks:
+      - todo
+
+
+networks:
+  todo:
+    driver: bridge
+      
