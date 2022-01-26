@@ -12,7 +12,9 @@ export default function Home() {
     setTask(event.target.value);
   };
 
-  const addTask = () => {
+  const addTask = (event) => {
+    event.preventDefault();
+    if (task === '') return;
     setListItens([
       ...listItens,
       task
@@ -21,14 +23,14 @@ export default function Home() {
   };
 
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <title>TODO List</title>
         <meta name="description" content="Todo list to remember" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
+      <main>
         <h1 className={styles.title}>
           My TODO List
         </h1>
@@ -37,7 +39,7 @@ export default function Home() {
           Everything you need to remember
         </p>
 
-        <div>
+        <form className={styles.input}>
           <input
             type="text"
             name="task"
@@ -45,10 +47,8 @@ export default function Home() {
             value={task}
             placeholder='Write your assignment here!'
           />
-          <button onClick={addTask}>
-            <Image src='/plus-icon.jpg' width={30} height={30} alt="plus icon"/>
-          </button>
-        </div>
+          <button type="submit" onClick={addTask}>+</button>
+        </form>
         <div className={styles.grid}>
           <List title="Tasks To Do" listItens={listItens}/>
           <List title="Tasks Done" listItens={listItens}/>

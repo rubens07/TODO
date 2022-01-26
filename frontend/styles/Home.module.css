@@ -1,0 +1,49 @@
+.title, .description, .footer {
+    text-align: center;
+}
+
+.description {
+    font-size: 20px;
+    margin-bottom: 3rem;
+}
+
+.input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.input input {
+    width: 400px;
+    height: 40px;
+    margin: 1rem;
+}
+.input button {
+    border-radius: 100%;
+    background-color: #64ab1d;
+    font-size: 30px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.grid {
+    display: inline-grid;
+    width: 100%;
+    grid-template-columns: 45% 45%;
+    justify-content: space-around;
+}
+
+.group {
+    min-width: 90%;
+}
+.group h3 {
+    text-align: center;
+}
+
+.list {
+
+}
+
+.footer {
+    position: static;
+}
