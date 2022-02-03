@@ -1,6 +1,6 @@
 const Item = ({ text }) => {
   return (
-    <li>{text}</li>
+    <div>{text}</div>
   )
 };
 
