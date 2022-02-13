@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Server from '../Connection/Server';
 import List from '../Components/List';
+import AddTask from '../Components/AddTask';
 
 
 export default function Home() {
-  const [task, setTask] = useState('');
   const [listTodo, setListTodo] = useState([]);
   const [listDone, setListDone] = useState([]);
-
-  const handleChange = (event) => {
-    setTask(event.target.value);
-  };
 
   useEffect(() => {
     const server = new Server();
@@ -20,7 +16,7 @@ export default function Home() {
       const todo = [];
       const done = [];
       result.tasks.forEach(task => {
-        console.log(task.status);
+        console.log(task);
         if (task.status === 0) {
           todo.push(task);
         } else {
@@ -34,14 +30,12 @@ export default function Home() {
   }, []);
 
 
-  const addTask = (event) => {
-    event.preventDefault();
-    if (task === '') return;
+  const addTask = (task) => {
+    // TODO - pegar o texto, fazer um server.addTask, pegar o id salvo, montar o dicionário e adicionar na lista
     setListTodo([
       ...listTodo,
       task
     ]);
-    setTask('');
   };
 
   return (
@@ -55,17 +49,10 @@ export default function Home() {
       </p>
 
       <form className="input">
-        <input
-          type="text"
-          name="task"
-          onChange={handleChange}
-          value={task}
-          placeholder='Write your assignment here!'
-        />
-        <button type="submit" onClick={addTask}>+</button>
+        <AddTask addTask={addTask} />
       </form>
       <div className="grid">
-        <List title="Tasks To Do" listItens={listTodo} />
+        <List title="Tasks To Do" listItens={listTodo} todo/>
         <List title="Tasks Done" listItens={listDone} />
       </div>
 
