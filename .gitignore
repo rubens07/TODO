@@ -5,3 +5,5 @@ frontend/.eslintrc.json
 frontend/.next/
 
 frontend/build
+
+.vscode
