@@ -5,6 +5,7 @@ from os import getenv
 
 
 app = Flask(__name__)
+app.config['CORS_HEADERS'] = 'Content-Type'
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['MYSQL_HOST'] = getenv('MYSQL_HOST')
 app.config['MYSQL_USER'] = getenv('MYSQL_USER')
@@ -19,17 +20,16 @@ def home():
 
 @app.route('/list-tasks', methods=['GET', ])
 def listTasks():
-    result = 'Error'
-
     try:
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM tasks")
         result = cur.fetchall()
         cur.close()
-    except Exception as error:
-        print(error)
 
-    return jsonify({'tasks': result})
+    except Exception as error:
+        return jsonify({"tasks": [], "Error": str(error)})
+
+    return jsonify({"tasks": result})
 
 @app.route('/add-task', methods=['POST', ])
 def addTask():
@@ -46,10 +46,14 @@ def addTask():
         mysql.connection.commit()
         cur.close()
     except Exception as error:
-        print(error)
+        return jsonify({"msg": "Error", "status": 500, "error": str(error)})
 
-    msg = f'Task {id} Add' if id > 0 else 'Error'
-    return jsonify({'msg': msg})
+    return jsonify({
+            "msg": f'Task {id} Add',
+            "id": id,
+            "status": 200,
+            "description": description
+        })
 
 @app.route('/update-task', methods=['PUT', ])
 def updateTask():
@@ -67,10 +71,9 @@ def updateTask():
         mysql.connection.commit()
         cur.close()
     except Exception as error:
-        print(error)
-        return jsonify({'msg': 'Error'})
+        return jsonify({'msg': 'Error', "status": 500, "error": str(error)})
     
-    return jsonify({'msg': f"Task {id} has been updated."})
+    return jsonify({'msg': f"Task {id} has been updated.", "status": 200, "id": id})
 
 @app.route('/delete-task', methods=['DELETE', ])
 def deleteTask():
@@ -84,10 +87,9 @@ def deleteTask():
         mysql.connection.commit()
         cur.close()
     except Exception as error:
-        print(error)
-        return jsonify({'msg': 'Error'})
+        return jsonify({'msg': 'Error', "status": 500, 'error': str(error)})
     
-    return jsonify({'msg': f"Task {id} has been deleted."})
+    return jsonify({'msg': f"Task {id} has been deleted.", "id": id, "status": 200})
 
 
 if __name__ == '__main__':
