@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 
-const Item = ({ text, todo }) => {
+const Item = (props) => {
+  const {
+    text,
+    taskId,
+    todo,
+    updateTask,
+    deleteTask,
+    status,
+  } = props;
   const [edit, setEdit] = useState(false);
   const [task, setTask] = useState(text);
 
@@ -10,13 +18,28 @@ const Item = ({ text, todo }) => {
   };
 
   const handleEdit = () => {
+    if (edit) {
+      updateTask({
+        id: taskId,
+        description: task,
+        status
+      });
+    }
     setEdit(!edit);
   }
 
-  // Botão Edit: aparece apenas na lista TODO
-  // Botão Check: aparece apenas na lista TODO
-  // Botão Excluir: aparece apenas na lista Done
-  // Botão Uncheck: Aparece apenas na lista Done
+  const handleCheck = (newStatus) => {
+    updateTask({
+      id: taskId,
+      description: task,
+      status: newStatus
+    });
+  };
+
+  const removeTask = () => {
+    deleteTask(taskId);
+  };
+
   return (
     <div className="item">
       <div className='item-text'>
@@ -24,7 +47,8 @@ const Item = ({ text, todo }) => {
           <input
             type="text"
             name="editForm"
-            autoFocus value={task}
+            autoFocus
+            value={task}
             onChange={handleChange}
           />
         )}
@@ -36,19 +60,19 @@ const Item = ({ text, todo }) => {
         {todo && (
           <>
             <button onClick={handleEdit} >
-              <img src='edit.ico' alt='Edit Task' />
+              <img src={edit ? 'save.ico' : 'edit.ico'} alt='Edit Task' />
             </button>
-            <button onClick={handleEdit} >
-              <img src='check1.ico' alt='Edit Task' />
+            <button onClick={() => handleCheck(1)} >
+              <img src='check.ico' alt='Edit Task' />
             </button>
           </>
         )}
         {!todo && (
           <>
-            <button onClick={handleEdit} >
+            <button onClick={removeTask} >
               <img src='delete.ico' alt='Edit Task' />
             </button>
-            <button onClick={handleEdit} >
+            <button onClick={() => handleCheck(0)} >
               <img src='back.ico' alt='Edit Task' />
             </button>
           </>
