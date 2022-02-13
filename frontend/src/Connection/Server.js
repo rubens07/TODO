@@ -1,9 +1,11 @@
 import axios from 'axios';
 
+const BACKEND_HOST = 'localhost';
+const BACKEND_PORT = 5000;
+
 export default class Server {
   constructor() {
-    this.url = `http://localhost:5000/`;
-    // this.url = `http://${process.env.BACKEND}:${process.env.PORT}/`;
+    this.url = `http://${BACKEND_HOST}:${BACKEND_PORT}/`;
     this.header = new Headers();
     this.header.append("Content-Type", "application/json");
     this.header.append("Access-Control-Allow-Origin", "*");
